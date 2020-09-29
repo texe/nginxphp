@@ -1,0 +1,41 @@
+version: '3'
+services:
+
+  #PHP App
+  app:
+    build:
+      context: .
+      dockerfile: config/dockerfile
+    image: VarlockPhp7.4
+    container_name: php_app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./config/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    networks:
+      - labnet
+
+  #Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+      - ./config/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - labnet
+
+#Docker Networks
+networks:
+  labnet: 
+    external:
+      name: labnet
