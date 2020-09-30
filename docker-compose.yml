@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: config/dockerfile
-    image: VarlockPhp7.4
+    image: christexe/php:7.4-fpm-alpine
     container_name: php_app
     restart: unless-stopped
     tty: true
@@ -15,7 +15,7 @@ services:
       SERVICE_TAGS: dev
     working_dir: /var/www/html
     volumes:
-      - ./:/var/www/html
+      - ./code/:/var/www/html
       - ./config/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     networks:
       - labnet
@@ -29,7 +29,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./:/var/www/html
+      - ./code/:/var/www/html
       - ./config/conf.d/:/etc/nginx/conf.d/
     networks:
       - labnet
